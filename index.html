@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shivansh Singh Sengar — Developer & Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div style="position:relative;text-align:center">
+      <div class="loader-text" id="loaderText"></div>
+    </div>
+    <div class="loader-bar" id="loaderBar"></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursor-follower"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <div class="logo-diamond"></div>
+          <div class="logo-diamond-inner"></div>
+        </div>
+        <span class="logo-text">Sengar<span class="accent">.</span></span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <a href="#contact" class="btn-primary">Let's Talk</a>
+
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#work" class="mobile-link">Work</a>
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#services" class="mobile-link">Services</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+      <a href="#contact" class="btn-primary mt">Let's Talk</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-radial"></div>
+
+    <!-- Animated orb -->
+    <div class="hero-orb" id="heroOrb">
+      <div class="orb-glow"></div>
+    </div>
+    <div class="hero-ring hero-ring-1"></div>
+    <div class="hero-ring hero-ring-2"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Available for Projects</span>
+      </div>
+
+      <div class="hero-heading">
+        <div class="line-wrap">
+          <h1 id="heroWord1" class="split-text reveal delay-1">SENGAR</h1>
+        </div>
+        <div class="line-wrap">
+          <h1 id="heroWord2" class="split-text shimmer reveal delay-2">STUDIO</h1>
+        </div>
+      </div>
+
+      <div class="hero-subline">
+        <p class="rotating-word" id="rotatingWord">Digital Experiences</p>
+      </div>
+
+      <p class="hero-desc reveal delay-3">
+        We build high-end digital products — brands, websites, and motion
+        that make your audience stop scrolling.
+      </p>
+
+      <div class="hero-ctas reveal delay-4">
+        <a href="#work" class="btn-primary btn-lg">
+          View Our Work
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+        <a href="#about" class="btn-outline btn-lg">Our Story</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+
+
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Brand Identity <i class="dot"></i></span>
+      <span class="marquee-item">Web Design <i class="dot"></i></span>
+      <span class="marquee-item">Motion Graphics <i class="dot"></i></span>
+      <span class="marquee-item">UI/UX Design <i class="dot"></i></span>
+      <span class="marquee-item">3D Visuals <i class="dot"></i></span>
+      <span class="marquee-item">Digital Strategy <i class="dot"></i></span>
+      <span class="marquee-item">App Design <i class="dot"></i></span>
+      <span class="marquee-item">Creative Direction <i class="dot"></i></span>
+      <span class="marquee-item">Brand Identity <i class="dot"></i></span>
+      <span class="marquee-item">Web Design <i class="dot"></i></span>
+      <span class="marquee-item">Motion Graphics <i class="dot"></i></span>
+      <span class="marquee-item">UI/UX Design <i class="dot"></i></span>
+      <span class="marquee-item">3D Visuals <i class="dot"></i></span>
+      <span class="marquee-item">Digital Strategy <i class="dot"></i></span>
+      <span class="marquee-item">App Design <i class="dot"></i></span>
+      <span class="marquee-item">Creative Direction <i class="dot"></i></span>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-tag cyan">— Selected Work</p>
+          <h2 class="section-title">OUR<br><span class="shimmer">PROJECTS</span></h2>
+        </div>
+        <p class="section-desc">A curated selection of our most impactful work across branding, web, and digital experiences.</p>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="ai">AI</button>
+        <button class="filter-btn" data-filter="web">Web</button>
+        <button class="filter-btn" data-filter="cli">CLI</button>
+        <button class="filter-btn" data-filter="python">Python</button>
+      </div>
+
+      <div class="project-grid" id="projectGrid">
+
+        <!-- BizScope AI — flagship project -->
+        <div class="project-card" data-tags="ai web app">
+          <div class="card-visual" style="--accent: #00d4ff">
+            <div class="card-orb"></div>
+            <div class="card-ring"></div>
+            <div class="card-dot"></div>
+            <span class="card-num">01</span>
+            <span class="card-year">2026</span>
+            <span class="card-live-badge">↗ Live</span>
+            <div class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-cat" style="color:#00d4ff99">AI · Market Intelligence · Full Stack</p>
+            <h3 class="card-title">BizScope AI</h3>
+            <p class="card-desc">AI-powered local market intelligence platform. Enter any location to analyze nearby competitors, discover business opportunities, and get AI recommendations. Built with Next.js, Node.js, PostgreSQL, and OpenStreetMap — free, no API keys required.</p>
+            <div class="card-tags">
+              <span>Next.js</span><span>Node.js</span><span>PostgreSQL</span><span>AI</span>
+            </div>
+            <div class="card-links">
+              <a href="https://bizzscope-ai.vercel.app" target="_blank" rel="noopener">Live Demo ↗</a>
+              <a href="https://github.com/shivanshsinghsengar/BizScope-ai" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shivansh CLI -->
+        <div class="project-card" data-tags="cli python">
+          <div class="card-visual" style="--accent: #00ff88">
+            <div class="card-orb"></div>
+            <div class="card-ring"></div>
+            <div class="card-dot"></div>
+            <span class="card-num">02</span>
+            <span class="card-year">2026</span>
+            <div class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-cat" style="color:#00ff8899">CLI Tool · Python</p>
+            <h3 class="card-title">Shivansh CLI</h3>
+            <p class="card-desc">A custom Python-based command-line interface tool. Automates developer workflows and provides quick utility commands straight from the terminal.</p>
+            <div class="card-tags">
+              <span>Python</span><span>CLI</span><span>Automation</span>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/shivanshsinghsengar/shivansh_CLI" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Time Table -->
+        <div class="project-card" data-tags="web">
+          <div class="card-visual" style="--accent: #7c3aed">
+            <div class="card-orb"></div>
+            <div class="card-ring"></div>
+            <div class="card-dot"></div>
+            <span class="card-num">03</span>
+            <span class="card-year">2026</span>
+            <div class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-cat" style="color:#7c3aed99">Web · Utility</p>
+            <h3 class="card-title">Time Table</h3>
+            <p class="card-desc">A clean, interactive timetable and schedule management web app. Simple, fast, zero dependencies — built with pure HTML, CSS, and JavaScript.</p>
+            <div class="card-tags">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/shivanshsinghsengar/time-table" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- This Portfolio -->
+        <div class="project-card" data-tags="web">
+          <div class="card-visual" style="--accent: #ff6b35">
+            <div class="card-orb"></div>
+            <div class="card-ring"></div>
+            <div class="card-dot"></div>
+            <span class="card-num">04</span>
+            <span class="card-year">2026</span>
+            <span class="card-live-badge" style="background:#ff6b3520;color:#ff6b35;border-color:#ff6b3540">You're here</span>
+            <div class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-cat" style="color:#ff6b3599">Portfolio · Web Design</p>
+            <h3 class="card-title">Sengar Studio Portfolio</h3>
+            <p class="card-desc">This very portfolio — dark-mode, ultra-minimalist, Refokus-inspired personal site. Pure HTML, CSS, JavaScript. Zero dependencies, instant load, fully custom cursor and animations.</p>
+            <div class="card-tags">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Dark UI</span>
+            </div>
+            <div class="card-links">
+              <a href="https://github.com/shivanshsinghsengar" target="_blank" rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BENTO / SERVICES -->
+  <section class="section bg-dark" id="services">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-tag green">— What We Do</p>
+          <h2 class="section-title">OUR<br><span class="shimmer">CAPABILITIES</span></h2>
+        </div>
+        <p class="section-desc">A full-service digital studio with deep expertise across design, development, and strategy.</p>
+      </div>
+
+      <div class="bento-grid">
+        <div class="bento-card bento-wide" style="--accent:#00d4ff">
+          <span class="bento-tag" style="color:#00d4ff;background:#00d4ff15;border-color:#00d4ff30">Development</span>
+          <div class="bento-icon" style="color:#00d4ff">⚡</div>
+          <h3>Full-Stack Web Development</h3>
+          <p>React, Next.js, Node.js — we build fast, scalable, and beautiful web applications from scratch.</p>
+        </div>
+        <div class="bento-card" style="--accent:#00ff88">
+          <span class="bento-tag" style="color:#00ff88;background:#00ff8815;border-color:#00ff8830">Design</span>
+          <div class="bento-icon" style="color:#00ff88">◈</div>
+          <h3>Brand Identity</h3>
+          <p>Logos, typography, color systems that make your brand unforgettable.</p>
+        </div>
+        <div class="bento-card" style="--accent:#7c3aed">
+          <span class="bento-tag" style="color:#7c3aed;background:#7c3aed15;border-color:#7c3aed30">Animation</span>
+          <div class="bento-icon" style="color:#7c3aed">◎</div>
+          <h3>Motion Design</h3>
+          <p>GSAP, Framer Motion, After Effects — we bring interfaces to life.</p>
+        </div>
+        <div class="bento-card" style="--accent:#ff6b35">
+          <span class="bento-tag" style="color:#ff6b35;background:#ff6b3515;border-color:#ff6b3530">3D</span>
+          <div class="bento-icon" style="color:#ff6b35">◉</div>
+          <h3>3D & Visual FX</h3>
+          <p>Three.js, Spline, Blender — immersive 3D experiences for web.</p>
+        </div>
+        <div class="bento-card bento-wide" style="--accent:#00d4ff">
+          <span class="bento-tag" style="color:#00d4ff;background:#00d4ff15;border-color:#00d4ff30">Design</span>
+          <div class="bento-icon" style="color:#00d4ff">▣</div>
+          <h3>UI/UX Design System</h3>
+          <p>Figma-based design systems, component libraries, and prototypes that scale with your product.</p>
+        </div>
+        <div class="bento-card" style="--accent:#00ff88">
+          <span class="bento-tag" style="color:#00ff88;background:#00ff8815;border-color:#00ff8830">Growth</span>
+          <div class="bento-icon" style="color:#00ff88">◈</div>
+          <h3>SEO & Performance</h3>
+          <p>Core Web Vitals, technical SEO, and performance audits.</p>
+        </div>
+        <div class="bento-card" style="--accent:#7c3aed">
+          <span class="bento-tag" style="color:#7c3aed;background:#7c3aed15;border-color:#7c3aed30">Mobile</span>
+          <div class="bento-icon" style="color:#7c3aed">◇</div>
+          <h3>Mobile Apps</h3>
+          <p>React Native and Flutter apps with pixel-perfect design.</p>
+        </div>
+        <div class="bento-card" style="--accent:#00d4ff">
+          <span class="bento-tag" style="color:#00d4ff;background:#00d4ff15;border-color:#00d4ff30">Strategy</span>
+          <div class="bento-icon" style="color:#00d4ff">◫</div>
+          <h3>Content Strategy</h3>
+          <p>Copy, visual storytelling, and social media design.</p>
+        </div>
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="tech-stack">
+        <p class="tech-label">Tech Stack</p>
+        <div class="tech-pills">
+          <span style="color:#fff">Next.js</span>
+          <span style="color:#61DAFB">React</span>
+          <span style="color:#3178C6">TypeScript</span>
+          <span style="color:#06B6D4">Tailwind</span>
+          <span style="color:#fff">Three.js</span>
+          <span style="color:#F24E1E">Figma</span>
+          <span style="color:#88CE02">GSAP</span>
+          <span style="color:#339933">Node.js</span>
+          <span style="color:#0055FF">Framer</span>
+          <span style="color:#E87D0D">Blender</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="section-tag cyan">— About Me</p>
+          <h2 class="section-title">I AM<br><span class="shimmer">SHIVANSH</span><br>SINGH SENGAR</h2>
+          <p class="about-p">I'm a solo developer and builder based in India. I build AI-powered tools, full-stack web apps, and CLI utilities that solve real problems — fast, clean, and without unnecessary complexity.</p>
+          <p class="about-p">Currently focused on AI + web intersections. My flagship project BizScope AI helps entrepreneurs understand local markets using AI — no paid APIs, no bloat, just results.</p>
+          <a href="https://github.com/shivanshsinghsengar" target="_blank" rel="noopener" class="cta-link">
+            View GitHub
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
+        <div class="about-visual">
+          <div class="visual-grid-bg"></div>
+          <div class="visual-radial-1"></div>
+          <div class="visual-radial-2"></div>
+          <div class="visual-center animate-float">
+            <span>SS</span>
+          </div>
+          <div class="visual-badge visual-badge-1">design.tsx</div>
+          <div class="visual-badge visual-badge-2 cyan-badge">ship.ready</div>
+          <div class="visual-badge visual-badge-3 green-badge">pixel.perfect</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-val cyan">4+</span><span class="stat-label">Projects Built</span></div>
+        <div class="stat-card"><span class="stat-val green">3+</span><span class="stat-label">Live Apps</span></div>
+        <div class="stat-card"><span class="stat-val purple">AI</span><span class="stat-label">Focused Stack</span></div>
+        <div class="stat-card"><span class="stat-val orange">∞</span><span class="stat-label">Building More</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section bg-dark" id="contact">
+    <div class="container">
+      <div class="contact-header">
+        <p class="section-tag cyan">— Get In Touch</p>
+        <h2 class="section-title">LET'S BUILD<br><span class="shimmer">SOMETHING</span></h2>
+        <p class="contact-sub">Have a project in mind? Drop us a message and we'll get back to you within 24 hours.</p>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Arjun Verma" required />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="hello@company.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Project Type</label>
+          <select>
+            <option value="" disabled selected>Select a service...</option>
+            <option>Brand Identity</option>
+            <option>Website / Web App</option>
+            <option>Mobile App</option>
+            <option>Motion Design</option>
+            <option>UI/UX Design</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell Us More</label>
+          <textarea rows="5" placeholder="Describe your project, timeline, and budget..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">
+          Send Message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </button>
+      </form>
+
+      <div class="contact-success" id="contactSuccess" style="display:none">
+        <div class="success-icon">✦</div>
+        <h3>Message Sent!</h3>
+        <p>We'll get back to you within 24 hours.</p>
+      </div>
+
+      <div class="contact-links">
+        <a href="mailto:shivanshsinghsengar@gmail.com" class="contact-link">
+          <span class="contact-link-icon">@</span>
+          shivanshsinghsengar@gmail.com
+        </a>
+        <a href="https://github.com/shivanshsinghsengar" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-icon">GH</span>
+          github/shivanshsinghsengar
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="logo">
+        <div class="logo-icon"><div class="logo-diamond"></div><div class="logo-diamond-inner"></div></div>
+        <span class="logo-text">Sengar<span class="accent">.</span></span>
+      </div>
+      <p class="footer-copy">© 2026 Shivansh Singh Sengar. All rights reserved.</p>
+      <p class="footer-made">Made with <span class="accent">♥</span> in India</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
