@@ -271,18 +271,50 @@ function initProjectFilter() {
 function initContactForm() {
   const form    = document.getElementById('contactForm');
   const success = document.getElementById('contactSuccess');
+  const btn     = form ? form.querySelector('.btn-submit') : null;
   if (!form) return;
-  form.addEventListener('submit', e => {
+
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    form.style.opacity   = '0';
-    form.style.transform = 'translateY(-20px)';
-    form.style.transition = 'all 0.4s ease';
-    setTimeout(() => {
-      form.style.display = 'none';
-      success.style.display = 'block';
-      success.style.opacity = '0';
-      success.style.transition = 'opacity 0.5s ease';
-      setTimeout(() => { success.style.opacity = '1'; }, 50);
-    }, 400);
+
+    // Loading state
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        // Success
+        form.style.opacity   = '0';
+        form.style.transform = 'translateY(-20px)';
+        form.style.transition = 'all 0.4s ease';
+        setTimeout(() => {
+          form.style.display = 'none';
+          success.style.display = 'block';
+          success.style.opacity = '0';
+          success.style.transition = 'opacity 0.5s ease';
+          setTimeout(() => { success.style.opacity = '1'; }, 50);
+        }, 400);
+      } else {
+        // Error
+        btn.textContent = 'Failed — Try Again';
+        btn.style.background = '#ff4444';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      }
+    } catch {
+      btn.textContent = 'Network Error — Try Again';
+      btn.style.background = '#ff4444';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
   });
 }
