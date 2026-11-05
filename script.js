@@ -134,50 +134,52 @@
     }, 3600);
   }
 
-  // ─── 2. PERSISTENT ROAMING CURSORS ────────────────────
+  // ─── 2. BUILDER CURSORS (Creating Content Live) ────────────────────
   function initRoamingCursors() {
     if (prefersReducedMotion) return;
 
     const container = document.getElementById('roamingCursors');
+    const fxLayer = document.getElementById('fx');
     const cursorColors = ['#ff4a3d', '#4cc9ff', '#ffeb3b', '#4caf50', '#9c27b0', '#ff6b9d', '#00d4ff', '#ff9800'];
+    const cursorNames = ['Alex', 'Maya', 'John', 'Sara', 'Dev', 'Zara', 'Leo', 'Nina'];
     const cursors = [];
 
+    // Create cursors
     for (let i = 0; i < 8; i++) {
-      const cursor = document.createElement('div');
-      cursor.className = 'roaming-cursor';
-      cursor.innerHTML = `<svg viewBox="0 0 16 16" fill="none"><path d="M1 1L14 8L7 9L5 14L1 1Z" fill="${cursorColors[i]}" stroke="${cursorColors[i]}" stroke-width="1"/></svg>`;
-      cursor.style.left = `${Math.random() * 100}%`;
-      cursor.style.top = `${Math.random() * 100}%`;
-      container.appendChild(cursor);
+      const cursorWrapper = document.createElement('div');
+      cursorWrapper.className = 'roaming-cursor';
+      cursorWrapper.innerHTML = `
+        <svg viewBox="0 0 16 16" fill="none"><path d="M1 1L14 8L7 9L5 14L1 1Z" fill="${cursorColors[i]}" stroke="${cursorColors[i]}" stroke-width="1"/></svg>
+        <span class="cursor-name-label" style="background: ${cursorColors[i]}; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-left: 4px; white-space: nowrap; font-family: 'Space Grotesk', sans-serif;">${cursorNames[i]}</span>
+      `;
+      cursorWrapper.style.display = 'flex';
+      cursorWrapper.style.alignItems = 'center';
+      container.appendChild(cursorWrapper);
 
       cursors.push({
-        el: cursor,
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        targetX: Math.random() * window.innerWidth,
-        targetY: Math.random() * window.innerHeight
+        el: cursorWrapper,
+        name: cursorNames[i],
+        color: cursorColors[i],
+        x: 200 + i * 100,
+        y: 200 + (i % 3) * 150,
+        targetX: 200,
+        targetY: 200
       });
     }
 
-    // Animate each cursor
+    // Store globally for content builder
+    window.builderCursors = cursors;
+
+    // Animation loop
     function animate() {
       cursors.forEach(cursor => {
-        // Lerp to target
-        cursor.x += (cursor.targetX - cursor.x) * 0.02;
-        cursor.y += (cursor.targetY - cursor.y) * 0.02;
+        // Move to target
+        const speed = 0.12;
+        cursor.x += (cursor.targetX - cursor.x) * speed;
+        cursor.y += (cursor.targetY - cursor.y) * speed;
 
-        cursor.el.style.left = cursor.x + 'px';
-        cursor.el.style.top = cursor.y + 'px';
-
-        // Pick new target if close
-        const dx = cursor.targetX - cursor.x;
-        const dy = cursor.targetY - cursor.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < 10) {
-          cursor.targetX = Math.random() * window.innerWidth;
-          cursor.targetY = Math.random() * window.innerHeight;
-        }
+        cursor.el.style.left = (cursor.x - window.scrollX) + 'px';
+        cursor.el.style.top = (cursor.y - window.scrollY) + 'px';
       });
 
       requestAnimationFrame(animate);
@@ -185,13 +187,18 @@
 
     animate();
 
-    // Update targets periodically
+    // Random roaming when idle
     setInterval(() => {
       cursors.forEach(cursor => {
-        cursor.targetX = Math.random() * window.innerWidth;
-        cursor.targetY = Math.random() * window.innerHeight;
+        // Only roam if not building
+        if (Math.random() > 0.5) {
+          const randomX = 100 + Math.random() * (window.innerWidth - 200);
+          const randomY = window.scrollY + 100 + Math.random() * (window.innerHeight - 200);
+          cursor.targetX = randomX;
+          cursor.targetY = randomY;
+        }
       });
-    }, 3000 + Math.random() * 2000);
+    }, 4000);
   }
 
   // ─── 3. MY CURSOR (blue arrow + Shivansh chip) ─────────
@@ -445,14 +452,397 @@
 
   // ─── INIT ALL ───────────────────────────────────────────
   function initAll() {
+    hideAllContent(); // Hide all content initially
     initRoamingCursors();
     initMyCursor();
-    initSelectionBoxes();
+    initContentBuilder(); // New: Build content on scroll
     initHUD();
     initNavHighlight();
     initMatrixFilter();
     initCardHover();
     initCursorSwarm();
+  }
+
+  // ─── HIDE ALL CONTENT INITIALLY ────────────────────────
+  function hideAllContent() {
+    // Hide all main content sections
+    const contentElements = document.querySelectorAll(`
+      .hero-portfolio,
+      .hero-hello,
+      .hero-name-tag,
+      .hero-role,
+      .hero-ctas,
+      .hero-portrait,
+      .section-heading,
+      .about-col,
+      .pull-quote,
+      .flagship-card,
+      .matrix-card,
+      .dispatch-heading,
+      .dispatch-contact
+    `);
+
+    contentElements.forEach(el => {
+      el.style.opacity = '0';
+      el.style.visibility = 'hidden';
+      el.setAttribute('data-built', 'false');
+    });
+  }
+
+  // ─── BUILD CONTENT ON SCROLL ────────────────────────────
+  function initContentBuilder() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.target.getAttribute('data-built') === 'false') {
+          // Build this element with cursors
+          buildElementWithCursors(entry.target);
+        }
+      });
+    }, { 
+      threshold: 0.3,
+      rootMargin: '100px'
+    });
+
+    // Observe all content elements
+    const contentElements = document.querySelectorAll(`
+      .hero-portfolio,
+      .hero-hello,
+      .hero-name-tag,
+      .hero-role,
+      .hero-ctas,
+      .hero-portrait,
+      .section-heading,
+      .about-col,
+      .pull-quote,
+      .flagship-card,
+      .matrix-card,
+      .dispatch-heading,
+      .dispatch-contact
+    `);
+
+    contentElements.forEach(el => observer.observe(el));
+  }
+
+  // ─── BUILD ELEMENT WITH CURSORS ─────────────────────────
+  function buildElementWithCursors(element) {
+    element.setAttribute('data-built', 'true');
+    
+    const rect = element.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const fxLayer = document.getElementById('fx');
+    
+    // Pick 1-2 random cursors to build this element
+    const availableCursors = window.builderCursors || [];
+    const numCursors = Math.min(1 + Math.floor(Math.random() * 2), availableCursors.length);
+    const selectedCursors = [];
+    
+    for (let i = 0; i < numCursors; i++) {
+      const cursor = availableCursors[Math.floor(Math.random() * availableCursors.length)];
+      if (cursor && !selectedCursors.includes(cursor)) {
+        selectedCursors.push(cursor);
+      }
+    }
+
+    // Determine build type based on element
+    let buildType = 'text';
+    if (element.classList.contains('section-heading') || element.classList.contains('hero-portfolio')) {
+      buildType = 'heading';
+    } else if (element.classList.contains('flagship-card') || element.classList.contains('matrix-card')) {
+      buildType = 'card';
+    } else if (element.classList.contains('about-col') || element.classList.contains('pull-quote')) {
+      buildType = 'paragraph';
+    } else if (element.classList.contains('hero-ctas') || element.classList.contains('dispatch-contact')) {
+      buildType = 'buttons';
+    } else if (element.classList.contains('hero-hello') || element.classList.contains('hero-role') || element.classList.contains('hero-name-tag')) {
+      buildType = 'text';
+    }
+
+    // Show building process with first cursor only (simpler and more reliable)
+    const cursor = selectedCursors[0];
+    if (cursor) {
+      // Move cursor to element
+      cursor.targetX = rect.left + rect.width * 0.3 + window.scrollX;
+      cursor.targetY = rect.top + rect.height * 0.5 + scrollTop;
+
+      // Show building animation
+      showBuildingProcess(cursor, element, rect, scrollTop, buildType, true);
+    }
+  }
+
+  // ─── SHOW BUILDING PROCESS ──────────────────────────────
+  function showBuildingProcess(cursor, element, rect, scrollTop, buildType, isLast) {
+    const fxLayer = document.getElementById('fx');
+    
+    // Show label
+    const label = document.createElement('div');
+    label.style.cssText = `
+      position: absolute;
+      left: ${rect.left}px;
+      top: ${rect.top + scrollTop - 30}px;
+      background: ${cursor.color};
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: monospace;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 9996;
+    `;
+    label.textContent = `${cursor.name}: Writing...`;
+    fxLayer.appendChild(label);
+
+    // Start typing the actual element content
+    if (buildType === 'heading' || buildType === 'text' || buildType === 'paragraph') {
+      typeElementContent(element, cursor, label, isLast);
+    } else if (buildType === 'card') {
+      buildCardWithTyping(element, cursor, label, isLast);
+    } else if (buildType === 'buttons') {
+      buildButtonsWithTyping(element, cursor, label, isLast);
+    }
+  }
+
+  // ─── TYPE ELEMENT CONTENT (Letter by Letter) ───────────
+  function typeElementContent(element, cursor, label, isLast) {
+    // Store original text and HTML
+    const originalText = element.textContent.trim();
+    
+    if (!originalText || originalText.length === 0) {
+      // If no text, just show element
+      element.style.visibility = 'visible';
+      element.style.opacity = '1';
+      if (label && label.parentNode) {
+        label.remove();
+      }
+      return;
+    }
+    
+    // Make element visible but empty
+    element.style.visibility = 'visible';
+    element.style.opacity = '1';
+    
+    // Store original styles
+    const originalHTML = element.innerHTML;
+    element.textContent = '';
+    
+    let currentIndex = 0;
+    const typingSpeed = 30; // ms per character
+    
+    function typeNextChar() {
+      if (currentIndex < originalText.length) {
+        // Add character + blinking cursor
+        element.textContent = originalText.substring(0, currentIndex + 1) + '|';
+        currentIndex++;
+        setTimeout(typeNextChar, typingSpeed);
+      } else {
+        // Typing complete - restore original content
+        element.innerHTML = originalHTML;
+        
+        // Clean up label
+        if (label && label.parentNode) {
+          label.style.transition = 'opacity 0.3s';
+          label.style.opacity = '0';
+          setTimeout(() => {
+            if (label.parentNode) label.remove();
+          }, 300);
+        }
+      }
+    }
+    
+    typeNextChar();
+  }
+
+  // ─── BUILD CARD WITH TYPING ─────────────────────────────
+  function buildCardWithTyping(element, cursor, label, isLast) {
+    const fxLayer = document.getElementById('fx');
+    const rect = element.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // First draw the card box
+    const cardBox = document.createElement('div');
+    cardBox.style.cssText = `
+      position: absolute;
+      left: ${rect.left}px;
+      top: ${rect.top + scrollTop}px;
+      width: 0;
+      height: 0;
+      border: 2px solid ${cursor.color};
+      background: ${cursor.color}08;
+      border-radius: 16px;
+      transition: width 0.8s ease-out, height 0.8s ease-out;
+      pointer-events: none;
+      z-index: 9995;
+    `;
+    fxLayer.appendChild(cardBox);
+    
+    setTimeout(() => {
+      cardBox.style.width = rect.width + 'px';
+      cardBox.style.height = rect.height + 'px';
+    }, 100);
+    
+    // After box is drawn, show the element and type content
+    setTimeout(() => {
+      // Get all text elements inside card
+      const textElements = [];
+      
+      // Find all text-containing elements
+      const h3 = element.querySelector('h3, h4');
+      const p = element.querySelector('p');
+      const techContainer = element.querySelector('.flagship-tech, .matrix-tech');
+      
+      if (h3) textElements.push(h3);
+      if (p) textElements.push(p);
+      
+      // Show element
+      element.style.visibility = 'visible';
+      element.style.opacity = '1';
+      
+      // Type each text element sequentially
+      let delay = 0;
+      textElements.forEach((textEl, index) => {
+        setTimeout(() => {
+          typeTextElement(textEl);
+        }, delay);
+        const textLength = textEl.textContent ? textEl.textContent.length : 0;
+        delay += textLength * 25 + 300;
+      });
+      
+      // Show tech tags after typing (no need to type them)
+      if (techContainer) {
+        setTimeout(() => {
+          techContainer.style.opacity = '1';
+          techContainer.style.transition = 'opacity 0.5s';
+        }, delay);
+      }
+      
+      // Show links container if exists
+      const linksContainer = element.querySelector('.flagship-links, .card-links');
+      if (linksContainer) {
+        setTimeout(() => {
+          linksContainer.style.opacity = '1';
+          linksContainer.style.transition = 'opacity 0.5s';
+        }, delay + 200);
+      }
+      
+      // Clean up
+      setTimeout(() => {
+        cardBox.style.transition = 'opacity 0.4s';
+        cardBox.style.opacity = '0';
+        setTimeout(() => {
+          if (cardBox.parentNode) cardBox.remove();
+        }, 400);
+        
+        if (label && label.parentNode) {
+          label.style.opacity = '0';
+          label.style.transition = 'opacity 0.3s';
+          setTimeout(() => {
+            if (label.parentNode) label.remove();
+          }, 300);
+        }
+      }, delay + 800);
+    }, 1000);
+  }
+
+  // ─── BUILD BUTTONS WITH TYPING ──────────────────────────
+  function buildButtonsWithTyping(element, cursor, label, isLast) {
+    const fxLayer = document.getElementById('fx');
+    const rect = element.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    element.style.visibility = 'visible';
+    element.style.opacity = '1';
+    
+    const buttons = element.querySelectorAll('a, button');
+    
+    buttons.forEach((btn, index) => {
+      // Draw button outline first
+      const btnRect = btn.getBoundingClientRect();
+      const outline = document.createElement('div');
+      outline.style.cssText = `
+        position: absolute;
+        left: ${btnRect.left}px;
+        top: ${btnRect.top + scrollTop}px;
+        width: 0;
+        height: ${btnRect.height}px;
+        border: 2px solid ${cursor.color};
+        border-radius: 50px;
+        transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+        z-index: 9995;
+      `;
+      fxLayer.appendChild(outline);
+      
+      setTimeout(() => {
+        outline.style.width = btnRect.width + 'px';
+        
+        // Type button text
+        setTimeout(() => {
+          typeTextElement(btn);
+          
+          // Clean up outline
+          setTimeout(() => {
+            outline.style.opacity = '0';
+            outline.style.transition = 'opacity 0.3s';
+            setTimeout(() => outline.remove(), 300);
+          }, btn.textContent.length * 30 + 200);
+        }, 400);
+      }, index * 400 + 100);
+    });
+    
+    // Clean up label
+    setTimeout(() => {
+      if (label && label.parentNode) {
+        label.style.opacity = '0';
+        label.style.transition = 'opacity 0.3s';
+        setTimeout(() => label.remove(), 300);
+      }
+    }, buttons.length * 600 + 1000);
+  }
+
+  // ─── TYPE TEXT ELEMENT (Reusable) ──────────────────────
+  function typeTextElement(element) {
+    if (!element) return;
+    
+    const originalText = element.textContent.trim();
+    
+    if (!originalText || originalText.length === 0) {
+      return;
+    }
+    
+    // Store original HTML
+    const originalHTML = element.innerHTML;
+    
+    // Check if element has children (complex structure)
+    const hasChildren = element.children.length > 0;
+    
+    if (hasChildren) {
+      // For complex elements with nested tags, just fade in
+      element.style.opacity = '0';
+      element.style.transition = 'opacity 0.5s';
+      setTimeout(() => {
+        element.style.opacity = '1';
+      }, 100);
+      return;
+    }
+    
+    // Simple text - type it
+    element.textContent = '';
+    
+    let currentIndex = 0;
+    const typingSpeed = 25;
+    
+    function typeNextChar() {
+      if (currentIndex < originalText.length) {
+        element.textContent = originalText.substring(0, currentIndex + 1);
+        currentIndex++;
+        setTimeout(typeNextChar, typingSpeed);
+      } else {
+        // Typing complete - restore original HTML in case there were inline styles/spans
+        element.innerHTML = originalHTML;
+      }
+    }
+    
+    typeNextChar();
   }
 
   // ─── START ──────────────────────────────────────────────
